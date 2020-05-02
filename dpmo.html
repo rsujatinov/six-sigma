@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Six Sigma</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+<body>
+
+    <div class="col-12" id="app">
+        <div class="d-flex justify-content-center align-items-center" style="height: 99vh">
+            <div class="text-center">
+                <h3>Fraction defective</h3>
+
+                <span class="form-inline">
+                    \(\large{ \textbf{p} = \frac{\text{number of defective units}}{\text{total number of produced units}} = }\) &nbsp;
+                    <input class="form-control" style="width: 85px" v-model="defectiveUnits" /> &nbsp; / &nbsp; 
+                    <input class="form-control" style="width: 85px" v-model="producedUnits"/> &nbsp;
+                    \( = \) &nbsp;
+                    <span id="p" :data-value="p" class="text-left" style="width: 50px;">\( 0 \)</span>
+                </span>
+
+                <h3 class="mt-5">Parts per Million</h3>
+
+                <span class="form-inline">
+                    \(\large{\textbf{ppm}} = \normalsize{\text{fraction defective} * \text{million units} = \textbf{p} * 10^6 = }\) &nbsp;
+                    <input class="form-control" style="width: 85px" v-model="defectiveUnits" /> &nbsp;&nbsp;
+                    \( *\,10^6 = \) &nbsp;
+                    <span id="ppm" :data-value="ppm" class="text-left" style="width: 50px;">\( 0 \)</span>
+                </span>
+
+                <h3 class="mt-5">Defects per Unit</h3>
+
+                <span class="form-inline">
+                    \(\large{ \textbf{DPU} = \frac{\text{total defects}}{\text{total number of produced units}} = }\) &nbsp;
+                    <input class="form-control" style="width: 85px" v-model="totalDefects" /> &nbsp; / &nbsp; 
+                    <input class="form-control" style="width: 85px" v-model="producedUnits"/> &nbsp;
+                    \( = \) &nbsp;
+                    <span id="dpu" :data-value="dpu" class="text-left" style="width: 50px;">\( 0 \)</span>
+                </span>
+
+                <h3 class="mt-5">Defects per Million Opportunities</h3>
+
+                <span class="form-inline">
+                    \(\large{ \textbf{DPMO} = \frac{\textbf{DPU} * 10^6}{\text{total opportunities for a defect in one unit}} = }\) &nbsp;
+                    <span>{{ dpu * 1e6 }}</span> &nbsp; / &nbsp;
+                    <input class="form-control" style="width: 85px" v-model="defectOpportunities" /> &nbsp;
+                    \( = \) &nbsp;
+                    <span id="dpmo" :data-value="dpmo" class="text-left" style="width: 50px;">\( 0 \)</span>
+                </span>
+
+            </div>
+
+        </div>
+
+
+  </div>
+
+  <script>
+    var app = new Vue({
+        el: '#app',
+        computed: {
+            p() {
+                const res = this.defectiveUnits / this.producedUnits;
+
+                if (window.MathJax) {
+                    $("#p").empty().append("\\(" + res + "\\)");
+                    window.MathJax.typeset(["#p"]);
+                }
+
+                return res;
+            },
+
+            ppm() {
+                const res = this.p * 1e6;
+
+                if (window.MathJax) {
+                    $("#ppm").empty().append("\\(" + res + "\\)");
+                    window.MathJax.typeset(["#ppm"]);
+                }
+
+                return res;
+            },
+
+            dpu() {
+                const res = this.totalDefects / this.producedUnits;
+
+                if (window.MathJax) {
+                    $("#dpu").empty().append("\\(" + res + "\\)");
+                    window.MathJax.typeset(["#dpu"]);
+                }
+
+                return res;
+            },
+
+            dpmo() {
+                const res = this.dpu * 1e6 / this.defectOpportunities;
+
+                if (window.MathJax) {
+                    $("#dpmo").empty().append("\\(" + res + "\\)");
+                    window.MathJax.typeset(["#dpmo"]);
+                }
+
+                return res;
+            },
+        },
+        data: {
+            defectiveUnits: 0,
+            producedUnits: 100,
+            totalDefects: 0,
+            defectOpportunities: 1
+        }
+    })
+  </script>
+
+</body>
+</html>

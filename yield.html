@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Six Sigma - Yield</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+<body>
+
+    <div class="col-12" id="app">
+        <div class="d-flex justify-content-center align-items-center" style="height: 99vh">
+            <div class="text-center">
+                <h3>Yield - same</h3>
+
+                <span class="form-inline">
+                    \(\textbf{yield} = (1-p)^n = \) &nbsp;
+                    <input class="form-control" style="width: 85px" v-model="yield1" /> &nbsp; ^ &nbsp; 
+                    <input class="form-control" style="width: 85px" v-model="steps"/> &nbsp;
+                    \( = \) &nbsp;
+                    <span id="yield1n" :data-value="yield1n" class="text-left" style="width: 50px;">\( 1     \)</span>
+                </span>
+
+                <h3 class="mt-5">Yield - different</h3>
+
+                <span class="form-inline">
+                    \(\textbf{yield} = \prod_{i=1}^n (1-p_i) = \) &nbsp;
+                    <input class="form-control" style="width: 65px" v-model="yield21" /> &nbsp;&nbsp;
+                    \( * \) &nbsp;
+                    <input class="form-control" style="width: 65px" v-model="yield22" /> &nbsp;&nbsp;
+                    \( * \) &nbsp;
+                    <input class="form-control" style="width: 65px" v-model="yield23" /> &nbsp;&nbsp;
+                    \( * \) &nbsp;
+                    <input class="form-control" style="width: 65px" v-model="yield24" /> &nbsp;&nbsp;
+                    \( * \) &nbsp;
+                    <input class="form-control" style="width: 65px" v-model="yield25" /> &nbsp;&nbsp;
+                    \( = \) &nbsp;
+                    <span id="yield_many" :data-value="yield_many" class="text-left" style="width: 50px;">\( 1 \)</span>
+                </span>
+
+            </div>
+
+        </div>
+
+
+  </div>
+
+  <script>
+    var app = new Vue({
+        el: '#app',
+        computed: {
+            yield1n() {
+                const res = Math.pow(this.yield1, this.steps);
+
+                if (window.MathJax) {
+                    $("#yield1n").empty().append("\\(" + res + "\\)");
+                    window.MathJax.typeset(["#yield1n"]);
+                }
+
+                return res;
+            },
+
+            yield_many() {
+                const res = this.yield21 * this.yield22 * this.yield23 * this.yield24 * this.yield25;
+
+                if (window.MathJax) {
+                    $("#yield_many").empty().append("\\(" + res + "\\)");
+                    window.MathJax.typeset(["#yield_many"]);
+                }
+
+                return res;
+            }
+
+        },
+        data: {
+            yield1: 1,
+            steps: 1,
+            yield21: 1,
+            yield22: 1,
+            yield23: 1,
+            yield24: 1,
+            yield25: 1,
+        }
+    })
+  </script>
+
+</body>
+</html>
